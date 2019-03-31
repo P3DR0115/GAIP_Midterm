@@ -26,14 +26,18 @@ public class SightSense : MonoBehaviour
     public float chaseTimeoutDuration; // how long the chase is in effect (e.g. chase for 5 seconds)
     public float chaseUntil; // Once the game time exceeds the chaseTimeoutTimer, will stop chasing.
 
+    public float investigateTimeoutDuration;
+    public float investigateUntil;
+
     public void Awake()
     {
         currentState = BehaviorState.Idle;
         patrolTimeoutDuration = 4.0f;
         chaseTimeoutDuration = 2.5f;
         maxPatrolRange = 10;
+        investigateTimeoutDuration = 3.0f;
         agent = GetComponentInParent<NavMeshAgent>();
-        lastKnownPlayerPosition = this.transform; // initially doesn't know where player is.
+        lastKnownPlayerPosition = this.transform; // initially doesn't know where player is. Didn't want a null value.
 
         FindPlayer();
     }
@@ -70,6 +74,7 @@ public class SightSense : MonoBehaviour
         {
             case BehaviorState.Idle:
                 {
+                    // Mainly used as a Transition to patrol.
                     GeneratePatrolPoint();
                     patrolUntil = Time.time + patrolTimeoutDuration;
                     currentState = BehaviorState.Patrol;
@@ -77,21 +82,29 @@ public class SightSense : MonoBehaviour
                 }
             case BehaviorState.Chase:
                 {
+                    // Move Towards the player's position.
                     agent.destination = Player.transform.position;
                     CheckChaseTime();
                     break;
                 }
             case BehaviorState.Investigate:
                 {
+                    // Investigate the player's last known position.
                     agent.destination = lastKnownPlayerPosition.position;
 
-                    currentState = BehaviorState.Patrol;
+                    if (Time.time > investigateUntil || (Mathf.Approximately(this.transform.position.x, lastKnownPlayerPosition.position.x) && Mathf.Approximately(this.transform.position.z, lastKnownPlayerPosition.position.z)))
+                    {
+                        currentState = BehaviorState.Idle;
+                    }
                     break;
                 }
             case BehaviorState.Patrol:
                 {
+                    // Move Towards a randomly generated coordinate.
                     agent.destination = PatrolPoint;
 
+                    // If enough time has passed that the AI should've reached the patrol point
+                    // or it is close enough (in case it is unreachable) then change state.
                     if (Time.time > patrolUntil || (Mathf.Approximately(this.transform.position.x, PatrolPoint.x) && Mathf.Approximately(this.transform.position.z, PatrolPoint.z)))
                     {
                         currentState = BehaviorState.Idle;
@@ -108,6 +121,7 @@ public class SightSense : MonoBehaviour
         if (Time.time > chaseUntil)
         {
             lastKnownPlayerPosition = Player.transform;
+            investigateUntil = Time.time + investigateTimeoutDuration;
             currentState = BehaviorState.Investigate;
 
             //if (chasedBefore)
