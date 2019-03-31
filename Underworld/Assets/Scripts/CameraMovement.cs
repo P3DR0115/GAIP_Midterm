@@ -28,26 +28,26 @@ public class CameraMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    //void Update()
+    //{
 
-        if (Input.GetAxis("Mouse X") != YawAxisPrev)
-        {
-            YawAxis = Input.GetAxis("Mouse X");
-            Yaw += HSpeed * Input.GetAxis("Mouse X");
+    //    if (Input.GetAxis("Mouse X") != YawAxisPrev)
+    //    {
+    //        YawAxis = Input.GetAxis("Mouse X");
+    //        Yaw += HSpeed * Input.GetAxis("Mouse X");
 
-        }
+    //    }
 
-        YawAxisPrev = YawAxis;
+    //    YawAxisPrev = YawAxis;
 
-        //cameraDir = new Vector2(Yaw, Pitch);
-        //cameraDir.Normalize();
-        RelativePlayer = Parent.transform.position;
-        RelativePlayer.y = 0;
+    //    //cameraDir = new Vector2(Yaw, Pitch);
+    //    //cameraDir.Normalize();
+    //    RelativePlayer = Parent.transform.position;
+    //    RelativePlayer.y = 0;
         
-        transform.RotateAround(Parent.transform.position, Vector3.up, Yaw);
-        transform.rotation.SetLookRotation(RelativePlayer);
-        //transform.eulerAngles = new Vector3(Pitch, 0.0f, 0.0f);
+    //    transform.RotateAround(Parent.transform.position, Vector3.up, Yaw);
+    //    transform.rotation.SetLookRotation(RelativePlayer);
+    //    //transform.eulerAngles = new Vector3(Pitch, 0.0f, 0.0f);
 
-    }
+    //}
 }
