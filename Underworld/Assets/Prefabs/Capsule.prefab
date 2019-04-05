@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6795632039607393704}
   - component: {fileID: 6795632039607393703}
   - component: {fileID: 6795632039607393702}
+  - component: {fileID: 7131628649701420785}
   - component: {fileID: 675501272820755164}
   - component: {fileID: 6795632039607393701}
   - component: {fileID: 7884883031657920115}
@@ -97,6 +98,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!135 &7131628649701420785
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795632039607393699}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 4.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &675501272820755164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,6 +124,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  lastKnownPlayerPosition: {fileID: 0}
+  PatrolPoint: {x: 0, y: 0, z: 0}
+  maxPatrolRange: 0
+  patrolTimeoutDuration: 0
+  patrolUntil: 0
+  currentState: 0
+  chaseTimeoutDuration: 0
+  chaseUntil: 0
+  investigateTimeoutDuration: 0
+  investigateUntil: 0
 --- !u!114 &6795632039607393701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,3 +364,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  lastKnownPlayerPosition: {fileID: 0}
+  PatrolPoint: {x: 0, y: 0, z: 0}
+  maxPatrolRange: 0
+  patrolTimeoutDuration: 0
+  patrolUntil: 0
+  currentState: 0
+  chaseTimeoutDuration: 0
+  chaseUntil: 0
+  investigateTimeoutDuration: 0
+  investigateUntil: 0

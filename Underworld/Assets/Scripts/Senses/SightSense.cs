@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public enum BehaviorState
 {
-    Idle,
+    Idle, // rotate in place? Scan 90 degrees.
     Patrol,
     Chase,
     Investigate,
@@ -29,6 +29,10 @@ public class SightSense : MonoBehaviour
     public float investigateTimeoutDuration;
     public float investigateUntil;
 
+    public float rotationSpeed;
+    public float idleTimeoutDuration;
+    public float idleUntil;
+
     public void Awake()
     {
         currentState = BehaviorState.Idle;
@@ -36,6 +40,9 @@ public class SightSense : MonoBehaviour
         chaseTimeoutDuration = 2.5f;
         maxPatrolRange = 10;
         investigateTimeoutDuration = 3.0f;
+        rotationSpeed = 2.4f;
+        idleTimeoutDuration = 4.5f;
+
         agent = GetComponentInParent<NavMeshAgent>();
         lastKnownPlayerPosition = this.transform; // initially doesn't know where player is. Didn't want a null value.
 
