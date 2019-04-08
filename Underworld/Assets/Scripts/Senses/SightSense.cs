@@ -9,6 +9,7 @@ public enum BehaviorState
     Patrol,
     Chase,
     Investigate,
+    LookAround,
 
 }
 
@@ -17,7 +18,7 @@ public class SightSense : MonoBehaviour
     NavMeshAgent agent;
     public GameObject Player;
     public Transform lastKnownPlayerPosition;
-    public Vector3 PatrolPoint;
+    public Vector3 PatrolPoint;   
     public int maxPatrolRange; // Range for the random number
     public float patrolTimeoutDuration;
     public float patrolUntil;
@@ -33,6 +34,15 @@ public class SightSense : MonoBehaviour
     public float idleTimeoutDuration;
     public float idleUntil;
 
+    public Transform startMarker;
+    public Transform endMarker;
+    public float startTime;
+    public float lookAroundUntil;
+    public float lookAroundTimeoutDuration;
+    private float journeyLength;
+    float distCovered;
+    float fracJourney;
+
     public void Awake()
     {
         currentState = BehaviorState.Idle;
@@ -42,6 +52,8 @@ public class SightSense : MonoBehaviour
         investigateTimeoutDuration = 3.0f;
         rotationSpeed = 2.4f;
         idleTimeoutDuration = 4.5f;
+        lookAroundTimeoutDuration = 2f;
+
 
         agent = GetComponentInParent<NavMeshAgent>();
         lastKnownPlayerPosition = this.transform; // initially doesn't know where player is. Didn't want a null value.
@@ -114,9 +126,40 @@ public class SightSense : MonoBehaviour
                     // or it is close enough (in case it is unreachable) then change state.
                     if (Time.time > patrolUntil || (Mathf.Approximately(this.transform.position.x, PatrolPoint.x) && Mathf.Approximately(this.transform.position.z, PatrolPoint.z)))
                     {
+                        //startMarker = endMarker = this.gameObject.transform;
+                        //startMarker.rotation = this.gameObject.transform.rotation;
+                        //endMarker.rotation = this.gameObject.transform.rotation;
+                        //endMarker.rotation = Quaternion.LookRotation(this.gameObject.transform.right);
+                        
+                        
+                        //endMarker.rotation = new Quaternion(this.gameObject.transform.right.x, this.gameObject.transform.right.y, this.gameObject.transform.right.z, startMarker.rotation.w);
+                        //journeyLength = Vector3.Distance(startMarker.position, endMarker.position);
+                        //endMarkerjourneyLength = Vector3.Angle(startMarker.position, endMarker.position);
+
+                        startTime = Time.time;
+                        lookAroundUntil = Time.time + lookAroundTimeoutDuration;
+                        
                         currentState = BehaviorState.Idle;
                     }
 
+                    break;
+                }
+
+            case BehaviorState.LookAround:
+                {
+                    distCovered = (Time.time - startTime) * rotationSpeed;
+
+                    // Fraction of journey completed = current distance divided by total distance.
+                    fracJourney = distCovered / journeyLength;
+
+                    // Set our position as a fraction of the distance between the markers.
+                    //this.gameObject.transform.position = Vector3.Lerp(startMarker.position, endMarker.position, fracJourney);
+                    this.gameObject.transform.rotation = Quaternion.RotateTowards(this.gameObject.transform.rotation, endMarker.rotation, rotationSpeed);
+
+                    if(Time.time > lookAroundUntil)
+                    {
+                        currentState = BehaviorState.Idle;
+                    }
                     break;
                 }
         }

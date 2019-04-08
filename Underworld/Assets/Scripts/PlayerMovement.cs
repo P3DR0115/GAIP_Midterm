@@ -2,13 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerMovementSpeed
+{
+    Stand,
+    Walk,
+    Run,
+}
+
 public class PlayerMovement : MonoBehaviour
 {
     Rigidbody RB;
     public Vector3 Direction; // checking to see if any keys are being pressed for movement
     public Vector3 RotationTemp; // Used to normalize the rotation.
     public Transform TargetRotation; // The target rotation for the player when rotating.
-    
+    public PlayerMovementSpeed MovementState;
+
     public float MoveHorizontal, MoveVertical, MovementSpeed, RotationSpeed;
     public bool RestrainY, RestrainX;
     public bool IsKeyDown   //Boolean the lets player know is a key is down useful to stop player if no keys are pressed
@@ -26,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
         this.MovementSpeed = 15f;
         this.RotationSpeed = 2.5f; ;
         this.Direction = Vector3.zero;
+        this.MovementState = PlayerMovementSpeed.Stand;
     }
 
     // Use this for initialization
