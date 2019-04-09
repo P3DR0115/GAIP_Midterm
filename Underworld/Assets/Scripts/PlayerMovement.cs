@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         this.MovementSpeed = 15f;
         this.RotationSpeed = 2.5f; ;
         this.Direction = Vector3.zero;
-        this.MovementState = PlayerMovementSpeed.Stand;
+        this.MovementState = PlayerMovementSpeed.Run;
     }
 
     // Use this for initialization
