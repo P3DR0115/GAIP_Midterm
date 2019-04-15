@@ -45,6 +45,7 @@ public class Pathfinding : MonoBehaviour
             if(CurrentNode == TargetNode)
             {
                 GetFinalPath(StartNode, TargetNode);
+                break;
             }
 
             foreach(Node NeighborNode in grid.GetNeighboringNodes(CurrentNode))
@@ -55,7 +56,7 @@ public class Pathfinding : MonoBehaviour
                 }
                 int MoveCost = CurrentNode.gCost + GetManhattenDistance(CurrentNode, NeighborNode);
 
-                if(MoveCost < NeighborNode.gCost || !OpenList.Contains(NeighborNode))
+                if(MoveCost < NeighborNode.FCost || !OpenList.Contains(NeighborNode))
                 {
                     NeighborNode.gCost = MoveCost;
                     NeighborNode.hCost = GetManhattenDistance(NeighborNode, TargetNode);

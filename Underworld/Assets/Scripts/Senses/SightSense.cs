@@ -220,13 +220,49 @@ public class SightSense : MonoBehaviour
         }
     }
 
+    bool Los, LosF, LosL, LosR; // Line of Sight variables for Forward, Left, Right and overall.
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
-            currentState = BehaviorState.Chase;
-            chaseUntil = Time.time + chaseTimeoutDuration;
+            CheckLineOfSight();
 
+            if(Los)
+            {
+                currentState = BehaviorState.Chase;
+                chaseUntil = Time.time + chaseTimeoutDuration;
+            }
+
+        }
+    }
+
+    private void CheckLineOfSight()
+    {
+        Quaternion rotation = new Quaternion();
+        LosF = LosL = LosR = false;
+
+        rotation.SetLookRotation(Player.transform.position);
+        Physics.Raycast(this.gameObject.transform.position, rotation.eulerAngles, out RaycastHit hitF, 12.375f);
+
+        if (hitF.rigidbody.gameObject.tag == "Player")
+            LosF = true;
+
+        rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z - 15);
+        Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out RaycastHit hitL, 12.375f);
+
+        rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z + 15);
+        Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out RaycastHit hitR, 12.375f);
+
+        
+
+        if (LosF || LosL || LosR)
+        {
+            Los = true;
+        }
+        else
+        {
+            Los = false;
         }
     }
 
@@ -234,8 +270,11 @@ public class SightSense : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            currentState = BehaviorState.Chase;
-            chaseUntil = Time.time + chaseTimeoutDuration;
+            if (Los)
+            {
+                currentState = BehaviorState.Chase;
+                chaseUntil = Time.time + chaseTimeoutDuration;
+            }
 
         }
     }
