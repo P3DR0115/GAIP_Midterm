@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HearingSense : MonoBehaviour
 {
+    Pathfinding pathfinding;
     GameObject PlayerObject;
     GameObject ParentObject;
     GameObject IntruderObject;
@@ -20,6 +21,7 @@ public class HearingSense : MonoBehaviour
             ParentObject = this.gameObject;
         }
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +41,8 @@ public class HearingSense : MonoBehaviour
             if(PlayerObject.GetComponent<PlayerMovement>().MovementState == PlayerMovementSpeed.Run)
             {
                 RotateToTarget(other);
-
+                pathfinding.StartPosition = this.gameObject.transform;
+                pathfinding.TargetPosition = PlayerObject.transform;
             }
         }
     }

@@ -17,6 +17,7 @@ public class SightSense : MonoBehaviour
 {
     NavMeshAgent agent;
     public GameObject Player;
+    //public RaycastHit HitF, HitL, HitR;
     public Transform lastKnownPlayerPosition;
     public Vector3 PatrolPoint;   
     public int maxPatrolRange; // Range for the random number
@@ -243,16 +244,16 @@ public class SightSense : MonoBehaviour
         LosF = LosL = LosR = false;
 
         rotation.SetLookRotation(Player.transform.position);
-        Physics.Raycast(this.gameObject.transform.position, rotation.eulerAngles, out RaycastHit hitF, 12.375f);
+        LosF = Physics.Raycast(this.gameObject.transform.position, rotation.eulerAngles, out RaycastHit hitF, 12.375f);
 
-        if (hitF.rigidbody.gameObject.tag == "Player")
-            LosF = true;
+        //if (hitF.rigidbody.gameObject.tag == "Player")
+        //    LosF = true;
 
         rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z - 15);
-        Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out RaycastHit hitL, 12.375f);
+        LosL = Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out RaycastHit hitL, 12.375f);
 
         rotation = Quaternion.Euler(rotation.x, rotation.y, rotation.z + 15);
-        Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out RaycastHit hitR, 12.375f);
+        LosR = Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out RaycastHit hitR, 12.375f);
 
         
 
@@ -270,10 +271,19 @@ public class SightSense : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            if (Los)
+            if(currentState == BehaviorState.Chase)
             {
-                currentState = BehaviorState.Chase;
                 chaseUntil = Time.time + chaseTimeoutDuration;
+            }
+            else
+            {
+                CheckLineOfSight();
+                if (Los)
+                {
+                    currentState = BehaviorState.Chase;
+                    chaseUntil = Time.time + chaseTimeoutDuration;
+                }
+
             }
 
         }

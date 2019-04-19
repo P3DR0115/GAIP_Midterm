@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6795632039607393701}
   - component: {fileID: 7884883031657920115}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: DeafAgent
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -410,7 +410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5228121794681382547
 Transform:
   m_ObjectHideFlags: 0

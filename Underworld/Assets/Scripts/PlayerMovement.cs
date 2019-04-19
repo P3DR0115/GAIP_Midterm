@@ -18,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
     public PlayerMovementSpeed MovementState;
 
     public float MoveHorizontal, MoveVertical, MovementSpeed, RotationSpeed;
-    public bool RestrainY, RestrainX;
     public bool IsKeyDown   //Boolean the lets player know is a key is down useful to stop player if no keys are pressed
     {
         get
