@@ -237,7 +237,7 @@ public class SightSense : MonoBehaviour
 
         }
     }
-
+    
     private void CheckLineOfSight()
     {
         Quaternion rotation = new Quaternion();

@@ -55,6 +55,9 @@ public class PlayerMovement : MonoBehaviour
 
         MoveThePlayer();
 
+        if(this.gameObject.transform.position.y < -10)
+            UnityEngine.SceneManagement.SceneManager.LoadScene("SampleScene");
+
 
         //this.transform.Translate(Direction.x * Speed, Direction.z * Speed, 0);
 
