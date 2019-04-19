@@ -17,7 +17,6 @@ public class SightSense : MonoBehaviour
 {
     NavMeshAgent agent;
     public GameObject Player;
-    //public RaycastHit HitF, HitL, HitR;
     public Transform lastKnownPlayerPosition;
     public Vector3 PatrolPoint;   
     public int maxPatrolRange; // Range for the random number
