@@ -6,7 +6,8 @@ public class Pathfinding : MonoBehaviour
 {
     Grid grid;
     public Transform StartPosition;
-    public Transform TargetPosition;
+    public Transform TargetTransform;
+    public List<Node> OpenList;
 
     private void Awake()
     {
@@ -15,7 +16,7 @@ public class Pathfinding : MonoBehaviour
 
     private void Update()
     {
-        FindPath(StartPosition.position, TargetPosition.position);
+        FindPath(StartPosition.position, TargetTransform.position);
     }
 
     void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
@@ -23,7 +24,7 @@ public class Pathfinding : MonoBehaviour
         Node StartNode = grid.NodeFromWorldPosition(a_StartPos);
         Node TargetNode = grid.NodeFromWorldPosition(a_TargetPos);
 
-        List<Node> OpenList = new List<Node>();
+        OpenList = new List<Node>();
         HashSet<Node> ClosedList = new HashSet<Node>();
 
         OpenList.Add(StartNode);

@@ -6,14 +6,17 @@ using UnityEngine.AI;
 public class HearingSense : MonoBehaviour
 {
     NavMeshAgent agent;
+    GameObject GameManager;
     Pathfinding pathfinding;
     GameObject PlayerObject;
     GameObject ParentObject;
     GameObject IntruderObject;
     Transform lastKnownPlayerPosition;
+    public BehaviorState currentState;
 
     private void Awake()
     {
+        currentState = BehaviorState.Idle;
         if (PlayerObject == null)
         {
             PlayerObject = FindObjectOfType<PlayerMovement>().gameObject;
@@ -26,6 +29,7 @@ public class HearingSense : MonoBehaviour
 
         if (pathfinding == null)
         {
+            GameManager = FindObjectOfType<Pathfinding>().gameObject;
             pathfinding = FindObjectOfType<Pathfinding>();
         }
 
@@ -42,6 +46,19 @@ public class HearingSense : MonoBehaviour
     void Update()
     {
         //BehaviorDecision();
+        if (currentState == BehaviorState.Chase)
+        {
+            currentState = BehaviorState.Investigate;
+            IntruderObject = PlayerObject;
+            agent.destination = pathfinding.OpenList[0].Position;
+
+        }
+        
+        if(Mathf.Approximately(this.gameObject.transform.position.x, agent.destination.x) && Mathf.Approximately(this.gameObject.transform.position.z, agent.destination.z))
+        {
+            pathfinding.OpenList.RemoveAt(0);
+
+        }
     }
 
     //private void BehaviorDecision()
@@ -131,9 +148,10 @@ public class HearingSense : MonoBehaviour
         {
             if(PlayerObject.GetComponent<PlayerMovement>().MovementState == PlayerMovementSpeed.Run)
             {
+                currentState = BehaviorState.Chase;
                 RotateToTarget(IntruderObject);
                 pathfinding.StartPosition = this.gameObject.transform;
-                pathfinding.TargetPosition = PlayerObject.transform;
+                pathfinding.TargetTransform = IntruderObject.transform;
             }
         }
     }
@@ -142,7 +160,9 @@ public class HearingSense : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            lastKnownPlayerPosition = PlayerObject.transform;
+            lastKnownPlayerPosition = IntruderObject.transform;
+            pathfinding.TargetTransform = lastKnownPlayerPosition;
+            agent.destination = lastKnownPlayerPosition.position;
         }
     }
 
