@@ -6,8 +6,8 @@ using UnityEngine.AI;
 public class HearingSense : MonoBehaviour
 {
     NavMeshAgent agent;
-    GameObject GameManager;
-    Pathfinding pathfinding;
+    public GameObject GameManager;
+    public Pathfinding pathfinding;
     GameObject PlayerObject;
     GameObject ParentObject;
     GameObject IntruderObject;
@@ -15,6 +15,11 @@ public class HearingSense : MonoBehaviour
     public BehaviorState currentState;
 
     private void Awake()
+    {
+        InitializeReferences();
+    }
+
+    private void InitializeReferences()
     {
         currentState = BehaviorState.Idle;
         if (PlayerObject == null)
@@ -30,7 +35,7 @@ public class HearingSense : MonoBehaviour
         if (pathfinding == null)
         {
             GameManager = FindObjectOfType<Pathfinding>().gameObject;
-            pathfinding = FindObjectOfType<Pathfinding>();
+            pathfinding = GameManager.GetComponent<Pathfinding>();
         }
 
         agent = GetComponentInParent<NavMeshAgent>();
@@ -45,6 +50,14 @@ public class HearingSense : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentState == BehaviorState.Alert)
+        {
+            // Mainly used as a Transition to patrol.
+            agent.destination = PlayerObject.transform.position;
+            pathfinding.StartPosition = this.gameObject.transform;
+            pathfinding.TargetTransform = PlayerObject.transform;
+            currentState = BehaviorState.Chase;
+        }
         //BehaviorDecision();
         if (currentState == BehaviorState.Chase)
         {
@@ -54,11 +67,27 @@ public class HearingSense : MonoBehaviour
 
         }
         
-        if(Mathf.Approximately(this.gameObject.transform.position.x, agent.destination.x) && Mathf.Approximately(this.gameObject.transform.position.z, agent.destination.z))
+        if(this.gameObject.transform.position.x == agent.destination.x && this.gameObject.transform.transform.position.z == agent.destination.z)
         {
-            pathfinding.OpenList.RemoveAt(0);
+            if (pathfinding.OpenList.Count > 0)
+            {
+                //agent.destination = pathfinding.OpenList[0].Position;
 
+                pathfinding.OpenList.RemoveAt(0);
+            }
+
+            if(pathfinding.OpenList.Count == 0)
+            {
+                currentState = BehaviorState.Idle;
+            }
+            
         }
+
+        //if(Mathf.Approximately(this.gameObject.transform.position.x, agent.destination.x) && Mathf.Approximately(this.gameObject.transform.position.z, agent.destination.z))
+        //{
+        //    pathfinding.OpenList.RemoveAt(0);
+
+        //}
     }
 
     //private void BehaviorDecision()
@@ -144,7 +173,7 @@ public class HearingSense : MonoBehaviour
     {
         IntruderObject = other.gameObject;
 
-        if(IntruderObject.tag == "Player")
+        if(IntruderObject.tag == "Player" && currentState != BehaviorState.Investigate)
         {
             if(PlayerObject.GetComponent<PlayerMovement>().MovementState == PlayerMovementSpeed.Run)
             {

@@ -10,7 +10,7 @@ public enum BehaviorState
     Chase,
     Investigate,
     LookAround,
-
+    Alert,
 }
 
 public class SightSense : MonoBehaviour
@@ -144,7 +144,6 @@ public class SightSense : MonoBehaviour
 
                     break;
                 }
-
             case BehaviorState.LookAround:
                 {
                     distCovered = (Time.time - startTime) * rotationSpeed;
@@ -160,6 +159,14 @@ public class SightSense : MonoBehaviour
                     {
                         currentState = BehaviorState.Idle;
                     }
+                    break;
+                }
+            case BehaviorState.Alert:
+                {
+                    // Mainly used as a Transition to patrol.
+                    agent.destination = Player.transform.position;
+                    chaseUntil = Time.time + (chaseTimeoutDuration * 3);
+                    currentState = BehaviorState.Chase;
                     break;
                 }
         }

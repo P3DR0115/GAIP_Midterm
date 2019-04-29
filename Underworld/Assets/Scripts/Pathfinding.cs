@@ -12,11 +12,13 @@ public class Pathfinding : MonoBehaviour
     private void Awake()
     {
         grid = GetComponent<Grid>();
+        OpenList = new List<Node>();
     }
 
     private void Update()
     {
-        FindPath(StartPosition.position, TargetTransform.position);
+        if(StartPosition != null && TargetTransform != null)
+            FindPath(StartPosition.position, TargetTransform.position);
     }
 
     void FindPath(Vector3 a_StartPos, Vector3 a_TargetPos)
