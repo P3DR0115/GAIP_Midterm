@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6795632039607393703}
   - component: {fileID: 6795632039607393702}
   - component: {fileID: 7131628649701420785}
-  - component: {fileID: 675501272820755164}
   - component: {fileID: 6795632039607393701}
   - component: {fileID: 7884883031657920115}
   m_Layer: 0
@@ -112,37 +111,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &675501272820755164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6795632039607393699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 698146e56b3ab0040bc176ae7d94dc69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 0}
-  lastKnownPlayerPosition: {fileID: 0}
-  PatrolPoint: {x: 0, y: 0, z: 0}
-  maxPatrolRange: 0
-  patrolTimeoutDuration: 0
-  patrolUntil: 0
-  currentState: 0
-  chaseTimeoutDuration: 0
-  chaseUntil: 0
-  investigateTimeoutDuration: 0
-  investigateUntil: 0
-  rotationSpeed: 0
-  idleTimeoutDuration: 0
-  idleUntil: 0
-  startMarker: {fileID: 0}
-  endMarker: {fileID: 0}
-  startTime: 0
-  lookAroundUntil: 0
-  lookAroundTimeoutDuration: 0
 --- !u!114 &6795632039607393701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,3 +463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0037a7f17cfd9114ebecf2fb4efd3b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameManager: {fileID: 0}
+  pathfinding: {fileID: 0}
+  currentState: 0

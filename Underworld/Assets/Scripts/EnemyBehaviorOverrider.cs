@@ -6,6 +6,8 @@ using UnityEngine;
 public class EnemyBehaviorOverrider : MonoBehaviour
 {
     public List<GameObject> EnemyList;
+    public float alertAllCooldown;
+    public float nextAlert;
     public bool alertAll;
 
     private void Awake()
@@ -17,6 +19,7 @@ public class EnemyBehaviorOverrider : MonoBehaviour
     private void FindAllEnemies()
     {
         EnemyList = new List<GameObject>();
+        alertAllCooldown = 10f;
 
         GameObject[] allEntities = FindObjectsOfType<GameObject>();
 
@@ -45,30 +48,44 @@ public class EnemyBehaviorOverrider : MonoBehaviour
 
     private void CheckAnyEnemiesChasing()
     {
-        for(int i = 0; i < EnemyList.Count; i++)
+        if(Time.time >= nextAlert)
         {
-            try
-            {
-                if (EnemyList[i].GetComponentInChildren<SightSense>().currentState == BehaviorState.Chase)
-                {
-                    alertAll = true;
-                }
-            }
-            catch (Exception e)
+            for (int i = 0; i < EnemyList.Count; i++)
             {
                 try
                 {
-                    if (EnemyList[i].GetComponentInChildren<GameObject>().GetComponent<HearingSense>().currentState == BehaviorState.Chase)
+                    if (EnemyList[i].GetComponentInChildren<SightSense>() != null)
                     {
-                        alertAll = true;
+                        if (EnemyList[i].GetComponentInChildren<SightSense>().currentState == BehaviorState.Chase)
+                        {
+                            alertAll = true;
+                            nextAlert = Time.time + alertAllCooldown;
+                        }
+                        else if (EnemyList[i].GetComponentInChildren<HearingSense>().currentState == BehaviorState.Investigate || EnemyList[i].GetComponentInChildren<HearingSense>().currentState == BehaviorState.Chase)
+                        {
+                            alertAll = true;
+                            nextAlert = Time.time + alertAllCooldown;
+                        }
                     }
                 }
-                catch (Exception ew)
+                catch (Exception e)
                 {
-                    // Unexpected sense type?
+                    try
+                    {
+                        if (EnemyList[i].GetComponentInChildren<HearingSense>().currentState == BehaviorState.Chase)
+                        {
+                            alertAll = true;
+                            nextAlert = Time.time + alertAllCooldown;
+                        }
+                    }
+                    catch (Exception ew)
+                    {
+                        // Unexpected sense type?
+                    }
                 }
             }
         }
+        
     }
 
     private void AlertAllEnemies()
@@ -79,13 +96,14 @@ public class EnemyBehaviorOverrider : MonoBehaviour
             {
                 try
                 {
-                    EnemyList[i].GetComponent<SightSense>().currentState = BehaviorState.Alert;
+                    EnemyList[i].GetComponentInChildren<SightSense>().currentState = BehaviorState.Alert;
+                    EnemyList[i].GetComponentInChildren<HearingSense>().currentState = BehaviorState.Alert;
                 }
                 catch (Exception e)
                 {
                     try
                     {
-                        EnemyList[i].GetComponent<HearingSense>().currentState = BehaviorState.Alert;
+                        EnemyList[i].GetComponentInChildren<HearingSense>().currentState = BehaviorState.Alert;
                     }
                     catch (Exception ew)
                     {

@@ -190,15 +190,15 @@ public class SightSense : MonoBehaviour
     {
         PatrolPoint = new Vector3();
 
-        System.Random j, k;
-        j = new System.Random();
-        k = new System.Random();
+        //Random j, k;
+        //j = new Random();
+        //k = new Random();
 
-        PatrolPoint.x = j.Next(maxPatrolRange);
-        PatrolPoint.z = k.Next(maxPatrolRange);
+        PatrolPoint.x = Random.Range(0, (maxPatrolRange - 1 ));
+        PatrolPoint.z = Random.Range(0, (maxPatrolRange - 1));
 
         // Switch to determine which quadrant the movement will be towards.
-        switch(j.Next(4))
+        switch (Random.Range(0, (maxPatrolRange - 1)))
         {
             case 0:
                 {
