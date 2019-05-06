@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7884883031657920115}
   m_Layer: 0
   m_Name: DeafAgent
-  m_TagString: Enemy
+  m_TagString: SeeingEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -93,7 +93,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 6795632039607393699}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.75
   m_Height: 1
   m_Direction: 1

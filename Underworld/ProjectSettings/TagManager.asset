@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - SeeingEnemy
+  - HearingEnemy
   layers:
   - Default
   - TransparentFX
